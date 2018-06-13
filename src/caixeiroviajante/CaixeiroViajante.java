@@ -2,7 +2,7 @@ package caixeiroviajante;
 
 public class CaixeiroViajante {
     
-    public static void main(String[] args) {        
+    public static Populacao gerarPopulacaoAleatoria(){
         Cidade cidade = new Cidade("Lisboa", 60, 200);
         GerenciadorRota.addCidade(cidade);
         Cidade cidade2 = new Cidade("Santarém", 180, 200);
@@ -56,18 +56,33 @@ public class CaixeiroViajante {
         
         Populacao populacao = new Populacao(50, true);
         
-        System.out.println("Distância inicial: " + (int)populacao.getMelhorRota().getDistancia());
+        return populacao;
+    }
+    
+    public static Populacao aplicaAlgoritmoGenetico(Populacao populacao){
+        for (int i = 0; i < 200; i++) {
+            populacao = AlgoritmoGenetico.evoluirPopulacao(populacao);
+        }
+        
+        return populacao;
+    }
+    
+    public static void main(String[] args) { 
+        /*
+        
+        
+        System.out.println();
         
         for (int i = 0; i < 200; i++) {
             populacao = AlgoritmoGenetico.evoluirPopulacao(populacao);
         }
         
         //Imprime o comprimento da melhor rota da população final
-        System.out.println("Distância final: " + (int)populacao.getMelhorRota().getDistancia());
+        System.out.println();
         //Imprime a solução encontrada para o problema
-        System.out.println("Solução:");
-        System.out.println(populacao.getMelhorRota()); 
-        
+        System.out.println();
+        System.out.println(); 
+        */
         
         /*
             PRÓXIMOS PASSOS: 
@@ -77,6 +92,9 @@ public class CaixeiroViajante {
             Executar Testes
         
         */
+        
+        Principal principal = new Principal();
+        principal.show();
     }
     
 }

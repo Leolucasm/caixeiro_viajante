@@ -3,9 +3,12 @@ package caixeiroviajante;
 public class AlgoritmoGenetico {
     private static final double taxa_mutacao = 0.0015;
     private static final int numero_rotas = 5;
-    private static final boolean elitismo = true;
+    private static boolean elitismo = true;
     private static int mutacoes = 0;
     
+    public static void setElitismo(boolean ativar_elitismo){
+        elitismo = ativar_elitismo;
+    }
     
     public static Populacao evoluirPopulacao(Populacao populacao){
         Populacao nova_populacao = new Populacao(populacao.tamanhoPopulacao(), false);
