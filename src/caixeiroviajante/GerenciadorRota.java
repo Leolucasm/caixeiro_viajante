@@ -19,6 +19,11 @@ public class GerenciadorRota {
         return cidade.toString();
     }
     
+    public static boolean removeTodasCidades(){
+        cidades.clear();
+        return cidades.isEmpty();
+    }
+    
     public static int qtdCidades(){
         return cidades.size();
     }

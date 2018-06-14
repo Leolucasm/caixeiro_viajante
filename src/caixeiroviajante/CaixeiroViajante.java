@@ -65,36 +65,5 @@ public class CaixeiroViajante {
         }
         
         return populacao;
-    }
-    
-    public static void main(String[] args) { 
-        /*
-        
-        
-        System.out.println();
-        
-        for (int i = 0; i < 200; i++) {
-            populacao = AlgoritmoGenetico.evoluirPopulacao(populacao);
-        }
-        
-        //Imprime o comprimento da melhor rota da população final
-        System.out.println();
-        //Imprime a solução encontrada para o problema
-        System.out.println();
-        System.out.println(); 
-        */
-        
-        /*
-            PRÓXIMOS PASSOS: 
-        
-            Integrar Graphic com o nosso código para ter uma visualização gráfica.            
-            Comentar o código para facilitar na identificação dos trechos
-            Executar Testes
-        
-        */
-        
-        Principal principal = new Principal();
-        principal.show();
-    }
-    
+    }            
 }
