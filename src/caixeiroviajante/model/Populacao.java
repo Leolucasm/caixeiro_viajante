@@ -1,6 +1,4 @@
-package caixeiroviajante;
-
-import java.util.ArrayList;
+package caixeiroviajante.model;
 
 public class Populacao {
     Rota[] rotas;

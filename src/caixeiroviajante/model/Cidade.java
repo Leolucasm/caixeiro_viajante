@@ -1,4 +1,4 @@
-package caixeiroviajante;
+package caixeiroviajante.model;
 
 public class Cidade {
     

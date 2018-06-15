@@ -1,5 +1,6 @@
-package caixeiroviajante;
+package caixeiroviajante.model;
 
+import caixeiroviajante.control.GerenciadorRota;
 import java.util.ArrayList;
 import java.util.Collections;
 

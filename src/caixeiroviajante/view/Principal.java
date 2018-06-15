@@ -1,5 +1,9 @@
-package caixeiroviajante;
+package caixeiroviajante.view;
 
+import caixeiroviajante.control.CaixeiroViajante;
+import caixeiroviajante.control.GerenciadorRota;
+import caixeiroviajante.model.Populacao;
+import caixeiroviajante.model.Cidade;
 import javax.swing.JOptionPane;
 
 public class Principal extends javax.swing.JFrame {
@@ -7,9 +11,11 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    public Principal() {          
-        initComponents();                
-        ativaBotoes(false);
+    
+    Populacao populacao;
+    
+    public Principal() {
+        initComponents();
     }
 
     /**
@@ -24,25 +30,18 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextResultado = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         jPanel3 = new javax.swing.JPanel();
         jButtonAdicionarCidade = new javax.swing.JButton();
         jButtonRemoverCidade = new javax.swing.JButton();
         jButtonIniciar = new javax.swing.JButton();
         jButtonRemoverTodasCidades = new javax.swing.JButton();
         jButtonLimparTela = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jCheckBoxElitismo = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxCidadesAleatorias = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxApresentacaoGrafica = new javax.swing.JCheckBoxMenuItem();
-        jMenuSair = new javax.swing.JMenu();
+        jCheckBoxCidadesAleatorias = new javax.swing.JCheckBox();
+        jButtonImprimirCidades = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Algoritmo Genético - Caixeiro Viajante");
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -54,14 +53,6 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextResultado);
 
         jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        jTextPane1.setBackground(new java.awt.Color(240, 240, 240));
-        jTextPane1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        jTextPane1.setText("Acesse o menu Configurações para verificar os seguintes parâmetros:  \n\n1) Ativar Elitismo \n2) Gerar Aleatóriamente Cidades \n3) Apresentação gráfica do resultado.\n");
-        jTextPane1.setToolTipText("");
-        jScrollPane3.setViewportView(jTextPane1);
-
-        jPanel1.add(jScrollPane3, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -100,6 +91,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jCheckBoxCidadesAleatorias.setText("Cidades Aleatórias");
+        jCheckBoxCidadesAleatorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxCidadesAleatoriasActionPerformed(evt);
+            }
+        });
+
+        jButtonImprimirCidades.setText("Imprimir Cidades");
+        jButtonImprimirCidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonImprimirCidadesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -107,11 +112,15 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonRemoverTodasCidades, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addComponent(jButtonRemoverTodasCidades, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                     .addComponent(jButtonRemoverCidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonAdicionarCidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonLimparTela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonLimparTela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jCheckBoxCidadesAleatorias)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButtonImprimirCidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -124,81 +133,28 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRemoverTodasCidades)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonImprimirCidades)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonLimparTela)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 424, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxCidadesAleatorias)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
                 .addComponent(jButtonIniciar)
                 .addContainerGap())
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.WEST);
 
-        jMenu2.setText("Configurações");
-
-        jCheckBoxElitismo.setSelected(true);
-        jCheckBoxElitismo.setText("Ativar Elitismo");
-        jCheckBoxElitismo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxElitismoActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jCheckBoxElitismo);
-
-        jCheckBoxCidadesAleatorias.setSelected(true);
-        jCheckBoxCidadesAleatorias.setText("Gerar cidades aleatóriamente");
-        jCheckBoxCidadesAleatorias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxCidadesAleatoriasActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jCheckBoxCidadesAleatorias);
-
-        jCheckBoxApresentacaoGrafica.setSelected(true);
-        jCheckBoxApresentacaoGrafica.setText("Apresentação Gráfica");
-        jMenu2.add(jCheckBoxApresentacaoGrafica);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenuSair.setText("Sair");
-        jMenuSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuSairActionPerformed(evt);
-            }
-        });
-        jMenuBar1.add(jMenuSair);
-
-        setJMenuBar(jMenuBar1);
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSairActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jMenuSairActionPerformed
-
-    private void jCheckBoxElitismoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxElitismoActionPerformed
-
-    }//GEN-LAST:event_jCheckBoxElitismoActionPerformed
-
-    private void jCheckBoxCidadesAleatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCidadesAleatoriasActionPerformed
-        ativaBotoes(!jCheckBoxCidadesAleatorias.getState());
-    }//GEN-LAST:event_jCheckBoxCidadesAleatoriasActionPerformed
-
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
-
-        Populacao populacao;
-
-        if (jCheckBoxCidadesAleatorias.getState()) {
-            populacao = CaixeiroViajante.gerarPopulacaoAleatoria();
-        } else {
-            //Validar variáveis de inicialização
-            populacao = new Populacao(50, true);
+        
+        if (!jCheckBoxCidadesAleatorias.isSelected()) {
+            populacao = new Populacao(GerenciadorRota.qtdCidades() * 2, true);
         }
-
-        //Verificar se na Classe AlgoritmoGenetico é o melhor lugar para setar o parâmetro abaixo
-        AlgoritmoGenetico.setElitismo(jCheckBoxElitismo.getState());        
-
-        iniciaProcessamento(populacao);       
+        iniciaProcessamento(populacao);
     }//GEN-LAST:event_jButtonIniciarActionPerformed
 
     private void jButtonAdicionarCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarCidadeActionPerformed
@@ -227,9 +183,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRemoverCidadeActionPerformed
 
     private void jButtonRemoverTodasCidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverTodasCidadesActionPerformed
-        if(GerenciadorRota.removeTodasCidades()){            
+        if (GerenciadorRota.removeTodasCidades()) {
             jTextResultado.setText("Todas as cidades foram removidas com sucesso");
-        } else{
+        } else {
             jTextResultado.setText("Todas as cidades foram removidas com sucesso");
         }
     }//GEN-LAST:event_jButtonRemoverTodasCidadesActionPerformed
@@ -238,27 +194,43 @@ public class Principal extends javax.swing.JFrame {
         limparTela();
     }//GEN-LAST:event_jButtonLimparTelaActionPerformed
 
+    private void jCheckBoxCidadesAleatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCidadesAleatoriasActionPerformed
+        if (jCheckBoxCidadesAleatorias.isSelected()) {
+            ativaBotoes(false);
+            GerenciadorRota.removeTodasCidades();
+            populacao = CaixeiroViajante.gerarPopulacaoAleatoria();
+        } else {
+            ativaBotoes(true);
+        }
+    }//GEN-LAST:event_jCheckBoxCidadesAleatoriasActionPerformed
+
+    private void jButtonImprimirCidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImprimirCidadesActionPerformed
+        imprimirCidades();
+    }//GEN-LAST:event_jButtonImprimirCidadesActionPerformed
+
     /*Funções do sistema*/
     private void ativaBotoes(boolean ativa) {
         jButtonAdicionarCidade.setEnabled(ativa);
         jButtonRemoverCidade.setEnabled(ativa);
     }
-    
-    private void limparTela(){
+
+    private void limparTela() {
         jTextResultado.setText("");
     }
 
-    private void iniciaProcessamento(Populacao populacao) {        
-        //Apresentação em forma de texto fica ativada sempre        
-        jTextResultado.setText("");
+    private void iniciaProcessamento(Populacao populacao) {
+        jTextResultado.setText("Resultado: \n\n");
         jTextResultado.append("Distância inicial: " + (int) populacao.getMelhorRota().getDistancia() + "\n");
         populacao = CaixeiroViajante.aplicaAlgoritmoGenetico(populacao);
         jTextResultado.append("Distância final: " + (int) populacao.getMelhorRota().getDistancia() + "\n");
-        jTextResultado.append("\n\nSolução:" + "\n\n");
-        jTextResultado.append(populacao.getMelhorRota().toString() + "\n");        
-        
-        if (jCheckBoxApresentacaoGrafica.getState()) {
-            //Apresentação Gráfica
+        jTextResultado.append("\n\nSolução:" + "\n");
+        jTextResultado.append(populacao.getMelhorRota().toString() + "\n");
+    }
+
+    private void imprimirCidades() {
+        jTextResultado.append("\n Cidades: \n\n");
+        for (int i = 0; i < GerenciadorRota.qtdCidades(); i++) {
+            jTextResultado.append(i + 1 + ")" + GerenciadorRota.getCidade(i).toString() + "\n");
         }
     }
 
@@ -299,21 +271,15 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarCidade;
+    private javax.swing.JButton jButtonImprimirCidades;
     private javax.swing.JButton jButtonIniciar;
     private javax.swing.JButton jButtonLimparTela;
     private javax.swing.JButton jButtonRemoverCidade;
     private javax.swing.JButton jButtonRemoverTodasCidades;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxApresentacaoGrafica;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxCidadesAleatorias;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxElitismo;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuSair;
+    private javax.swing.JCheckBox jCheckBoxCidadesAleatorias;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextArea jTextResultado;
     // End of variables declaration//GEN-END:variables
 }
