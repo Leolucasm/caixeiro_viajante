@@ -4,16 +4,17 @@ import caixeiroviajante.control.CaixeiroViajante;
 import caixeiroviajante.control.GerenciadorRota;
 import caixeiroviajante.model.Populacao;
 import caixeiroviajante.model.Cidade;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Principal extends javax.swing.JFrame {
 
     /**
      * Creates new form Principal
      */
-    
     Populacao populacao;
-    
+
     public Principal() {
         initComponents();
     }
@@ -46,10 +47,14 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(460, 89));
+
         jTextResultado.setColumns(20);
         jTextResultado.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         jTextResultado.setRows(5);
         jTextResultado.setEnabled(false);
+        jTextResultado.setMinimumSize(new java.awt.Dimension(240, 89));
+        jTextResultado.setPreferredSize(new java.awt.Dimension(240, 89));
         jScrollPane2.setViewportView(jTextResultado);
 
         jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -150,7 +155,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarActionPerformed
-        
+
         if (!jCheckBoxCidadesAleatorias.isSelected()) {
             populacao = new Populacao(GerenciadorRota.qtdCidades() * 2, true);
         }
@@ -195,12 +200,19 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLimparTelaActionPerformed
 
     private void jCheckBoxCidadesAleatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCidadesAleatoriasActionPerformed
-        if (jCheckBoxCidadesAleatorias.isSelected()) {
-            ativaBotoes(false);
+        int resposta = JOptionPane.showConfirmDialog(null, "Ao alterar este parâmetro, todas as cidades serão removidas. \n Deseja continuar?", "Cidades aleatórias", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_OPTION) {
             GerenciadorRota.removeTodasCidades();
-            populacao = CaixeiroViajante.gerarPopulacaoAleatoria();
+
+            if (jCheckBoxCidadesAleatorias.isSelected()) {
+                ativaBotoes(false);
+                populacao = CaixeiroViajante.gerarPopulacaoAleatoria();
+            } else {
+                ativaBotoes(true);
+            }
         } else {
-            ativaBotoes(true);
+            jCheckBoxCidadesAleatorias.setSelected(!jCheckBoxCidadesAleatorias.isSelected());
         }
     }//GEN-LAST:event_jCheckBoxCidadesAleatoriasActionPerformed
 
@@ -227,11 +239,11 @@ public class Principal extends javax.swing.JFrame {
         jTextResultado.append(populacao.getMelhorRota().toString() + "\n");
     }
 
-    private void imprimirCidades() {
+    private void imprimirCidades() {         
         jTextResultado.append("\n Cidades: \n\n");
         for (int i = 0; i < GerenciadorRota.qtdCidades(); i++) {
-            jTextResultado.append(i + 1 + ")" + GerenciadorRota.getCidade(i).toString() + "\n");
-        }
+            jTextResultado.append(i + 1 + ")" + GerenciadorRota.getCidade(i).toString() + "\n");                                                
+        }                                       
     }
 
     /**
